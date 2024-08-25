@@ -50,13 +50,29 @@ jobs:
 
         if [ ${{github.event.inputs.custom-config}}!='' ]; then cp -f /home/runner/work/buildroot-actions/buildroot-actions/configs/${{github.event.inputs.custom-config}} configs/; fi
 
+        CPU_N=$(getconf _NPROCESSORS_ONLN)
+
         echo '---start make---'
         make ${{github.event.inputs.board}}_defconfig
-        make
+        set -o pipefail
+        if ! ( \
+        make -j $CPU_N sdk \
+        | tee build.log \
+        | grep ">>>" \
+        ); then tail -n100 build.log && exit 1
+        fi
+        
         cp -r /opt/buildroot/output/images /opt/firmware
+    - name: Archive build logs (musl)
+      if: success() || failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-logs
+        path: ./build.log
 
     - name : Upload buildroot-${{github.event.inputs.branches-tags}}-${{github.event.inputs.board}}
       uses: actions/upload-artifact@master
       with:
         name: buildroot-${{github.event.inputs.branches-tags}}-${{github.event.inputs.board}}
         path: /opt/firmware
+        if-no-files-found: error
