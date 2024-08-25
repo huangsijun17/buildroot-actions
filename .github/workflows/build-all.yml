@@ -39,7 +39,7 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get upgrade
-        sudo apt-get install -y make gcc g++ unzip git bc python device-tree-compiler mtd-utils gcc-multilib
+        sudo apt-get install -y make gcc g++ unzip git bc python device-tree-compiler mtd-utils gcc-multilib g++-multilib
 
     - name: Bulid
       run: |
@@ -53,10 +53,11 @@ jobs:
         CPU_N=$(getconf _NPROCESSORS_ONLN)
 
         echo '---start make---'
+        echo 'CPU: ${CPU_N}'
         make ${{github.event.inputs.board}}_defconfig
         set -o pipefail
         if ! ( \
-        make -j $CPU_N sdk \
+        make -j $CPU_N  \
         | tee build.log \
         | grep ">>>" \
         ); then tail -n100 build.log && exit 1
@@ -68,7 +69,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: build-logs
-        path: ./build.log
+        path: /opt/buildroot/build.log
 
     - name : Upload buildroot-${{github.event.inputs.branches-tags}}-${{github.event.inputs.board}}
       uses: actions/upload-artifact@master
