@@ -18,7 +18,7 @@ on:
       custom-config:
         description: 'custom-config'
         required: false
-        default: 'buildroot-a30.config'
+        default: 'a30_defconfig'
       build-with:
         description: 'build-with'
         required: false
