@@ -57,7 +57,7 @@ jobs:
         make ${{github.event.inputs.board}}_defconfig
         set -o pipefail
         if ! ( \
-        make -j $CPU_N  \
+        make -j $CPU_N 2>&1 \
         | tee build.log \
         | grep ">>>" \
         ); then tail -n100 build.log && exit 1
