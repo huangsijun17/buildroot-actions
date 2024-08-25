@@ -10,7 +10,7 @@ on:
       branches-tags:
         description: 'branches-tags'
         required: true
-        default: '2024.08.1'
+        default: '2024.02.1'
       board:
         description: 'board'
         required: true
