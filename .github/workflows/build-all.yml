@@ -10,15 +10,15 @@ on:
       branches-tags:
         description: 'branches-tags'
         required: true
-        default: '2018.08.2'
+        default: '2024.08.1'
       board:
         description: 'board'
         required: true
-        default: 'beaglebone'
+        default: 'a30'
       custom-config:
         description: 'custom-config'
         required: false
-        default: 'beaglebone_defconfig'
+        default: 'buildroot-a30.config'
       build-with:
         description: 'build-with'
         required: false
