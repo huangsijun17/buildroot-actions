@@ -63,7 +63,9 @@ jobs:
         ); then tail -n100 build.log && exit 1
         fi
         ls -lha /opt/firmware
-        ls -lah /opt/buildroot/output
+        ls -lahR /opt/buildroot/output
+        ls -lah /opt/buildroot/output/images/*
+        ls -lah /opt/buildroot/output/target/*
         cp -r /opt/buildroot/output/images /opt/firmware
     - name: Archive build logs (musl)
       if: success() || failure()
