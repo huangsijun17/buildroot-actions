@@ -62,7 +62,8 @@ jobs:
         | grep ">>>" \
         ); then tail -n100 build.log && exit 1
         fi
-        
+        ls -lha /opt/firmware
+        ls -lah /opt/buildroot/output
         cp -r /opt/buildroot/output/images /opt/firmware
     - name: Archive build logs (musl)
       if: success() || failure()
