@@ -23,11 +23,15 @@ on:
         description: 'build-with'
         required: false
         default: ''
+      create-release:
+        description: 'create release'
+        required: false
+        default: 'false'
 
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@v2
     - name: Clone source code
@@ -63,9 +67,9 @@ jobs:
         ); then tail -n100 build.log && exit 1
         fi
         make sdk
-        cp -r /opt/buildroot/output/images /opt/firmware
-        gzip /opt/firmware/images/arm-a30-linux-gnueabihf_sdk-buildroot.tar
-        gzip /opt/firmware/iamges/rootfs.tar
+        #cp -r /opt/buildroot/output/images /opt/firmware
+        gzip /opt/buildroot/output/images/arm-a30-linux-gnueabihf_sdk-buildroot.tar
+        gzip /opt/buildroot/output/images/rootfs.tar
     - name: Archive build logs (musl)
       if: success() || failure()
       uses: actions/upload-artifact@v4
@@ -82,9 +86,10 @@ jobs:
 
     - name: Release with Notes
       uses: softprops/action-gh-release@v1
+      if: ${{github.event.inputs.create-release}}
       with:
         files: |
-           /opt/firmware/arm-a30-linux-gnueabihf_sdk-buildroot.tar.gz
-           /opt/firmware/iamges/rootfs.tar.gz
+           /opt/buildroot/output/images/arm-a30-linux-gnueabihf_sdk-buildroot.tar.gz
+           /opt/buildroot/output/images/rootfs.tar.gz
       env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
