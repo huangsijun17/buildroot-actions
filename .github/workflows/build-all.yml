@@ -85,7 +85,7 @@ jobs:
 
     - name: Release with Notes
       uses: softprops/action-gh-release@v1
-      if: contains(github.event.inputs.create-release, "true")
+      if: contains(github.event.inputs.create-release, 'true')
       with:
         files: |
            /opt/buildroot/output/images/arm-a30-linux-gnueabihf_sdk-buildroot.tar.gz
