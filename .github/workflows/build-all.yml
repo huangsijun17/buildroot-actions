@@ -43,7 +43,7 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get upgrade
-        sudo apt-get install -y make gcc g++ unzip git bc python device-tree-compiler mtd-utils gcc-multilib g++-multilib
+        sudo apt-get install -y make gcc g++ unzip git bc python3 device-tree-compiler mtd-utils gcc-multilib g++-multilib
 
     - name: Bulid
       run: |
@@ -70,7 +70,7 @@ jobs:
         #cp -r /opt/buildroot/output/images /opt/firmware
         gzip /opt/buildroot/output/images/arm-a30-linux-gnueabihf_sdk-buildroot.tar
         gzip /opt/buildroot/output/images/rootfs.tar
-    - name: Archive build logs (musl)
+    - name: Archive build logs
       if: success() || failure()
       uses: actions/upload-artifact@v4
       with:
@@ -81,7 +81,7 @@ jobs:
       uses: actions/upload-artifact@master
       with:
         name: buildroot-${{github.event.inputs.branches-tags}}-${{github.event.inputs.board}}
-        path: /opt/firmware
+        path: /opt/buildroot/output/images
         if-no-files-found: error
 
     - name: Release with Notes
