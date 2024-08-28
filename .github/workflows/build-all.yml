@@ -67,9 +67,8 @@ jobs:
         ); then tail -n100 build.log && exit 1
         fi
         make sdk
-        #cp -r /opt/buildroot/output/images /opt/firmware
-        gzip /opt/buildroot/output/images/arm-a30-linux-gnueabihf_sdk-buildroot.tar
         gzip /opt/buildroot/output/images/rootfs.tar
+        cp ${{github.event.inputs.board}}_defconfig /opt/buildroot/output/images/
     - name: Archive build logs
       if: success() || failure()
       uses: actions/upload-artifact@v4
@@ -86,7 +85,7 @@ jobs:
 
     - name: Release with Notes
       uses: softprops/action-gh-release@v1
-      if: ${{github.event.inputs.create-release}}
+      if: contains(github.event.inputs.create-release, "true")
       with:
         files: |
            /opt/buildroot/output/images/arm-a30-linux-gnueabihf_sdk-buildroot.tar.gz
