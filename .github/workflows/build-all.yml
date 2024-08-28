@@ -68,7 +68,7 @@ jobs:
         fi
         make sdk
         gzip /opt/buildroot/output/images/rootfs.tar
-        cp ${{github.event.inputs.board}}_defconfig /opt/buildroot/output/images/
+        cp /opt/buildroot/configs/${{github.event.inputs.board}}_defconfig /opt/buildroot/output/images/
     - name: Archive build logs
       if: success() || failure()
       uses: actions/upload-artifact@v4
@@ -90,5 +90,6 @@ jobs:
         files: |
            /opt/buildroot/output/images/arm-a30-linux-gnueabihf_sdk-buildroot.tar.gz
            /opt/buildroot/output/images/rootfs.tar.gz
+           /opt/buildroot/configs/${{github.event.inputs.board}}_defconfig
       env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
