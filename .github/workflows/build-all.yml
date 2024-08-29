@@ -61,12 +61,13 @@ jobs:
         make ${{github.event.inputs.board}}_defconfig
         set -o pipefail
         if ! ( \
-        make -j $CPU_N 2>&1 \
+        make -j $CPU_N world 2>&1 \
         | tee build.log \
         | grep ">>>" \
         ); then tail -n100 build.log && exit 1
         fi
-        make sdk
+        #make sdk
+        ls -lah /opt
         gzip /opt/buildroot/output/images/rootfs.tar
         cp /opt/buildroot/configs/${{github.event.inputs.board}}_defconfig /opt/buildroot/output/images/
     - name: Archive build logs
