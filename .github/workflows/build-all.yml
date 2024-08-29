@@ -87,7 +87,7 @@ jobs:
       uses: softprops/action-gh-release@v1
       if: contains(github.event.inputs.create-release, 'true')
       with:
-        tag_name: ${{github.event.inputs.custom-config}}
+        tag_name: ${{github.event.inputs.board}}
         files: |
            /opt/buildroot/output/images/arm-a30-linux-gnueabihf_sdk-buildroot.tar.gz
            /opt/buildroot/output/images/rootfs.tar.gz
